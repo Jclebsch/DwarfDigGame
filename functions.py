@@ -1,4 +1,5 @@
 import random
+from rank import save_rank
 
 # Items tuple, each index corresponds to an item
 items = {
@@ -20,16 +21,16 @@ items = {
 probabilities = [
     (0, 0.2),   #STONE
     (0.2, 0.4), #COAL
-    (0.4, 0.5), 
-    (0.5, 0.60), 
-    (0.60, 0.70), 
-    (0.70, 0.75), 
-    (0.75, 0.80), 
-    (0.80, 0.88), 
-    (0.88, 0.90), 
-    (0.90, 0.92), 
-    (0.92, 0.97), 
-    (0.97, 1.00)  
+    (0.4, 0.5), #COOPER
+    (0.5, 0.60), #IRON
+    (0.60, 0.70), #SILVER
+    (0.70, 0.75), #GOLD
+    (0.75, 0.80), #DIAMOND
+    (0.80, 0.88), #CRYSTAL
+    (0.88, 0.90), #SILMARIL
+    (0.90, 0.92), #MITHRIL
+    (0.92, 0.97), #GANDALF
+    (0.97, 1.00)  #BALROG
 ]
 
 user_action = ""  
@@ -52,7 +53,7 @@ def update_probabilities():
     total_prob = sum([end - start for start, end in probabilities])
     probabilities = [(start / total_prob, end / total_prob) for start, end in probabilities]
 
-def game():
+def game(player_name):
     global user_action, rounds  
 
     print("Try to dig safely without going too deep.......\n")
@@ -97,6 +98,7 @@ def game():
                     print("FINAL SCORE")
                     print(f"{score}")
                     print("\nGoodbye!")
+                    save_rank(player_name, score)
                     break
 
             # Add the found item to the player's cart
@@ -132,11 +134,6 @@ def game():
                 if not item_found:
                     print(f"{item_to_remove} is not in your cart.")
 
-                # Display updated cart
-                print("\nItems in your cart after removal:")
-                for item, quantity in miners_cart.items():
-                    print(f"{item}: {quantity}")
-
             score += item_value
             
             print("\nItems in your cart:")
@@ -152,6 +149,7 @@ def game():
                 print("\nFINAL SCORE")
                 print(f"{score}")
                 print("\nGoodbye!")
+                save_rank(player_name, score)
                 break
 
         else:
